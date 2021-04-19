@@ -10,7 +10,7 @@ SoundID sound1;
 ObjectID button1, button2, marble_numberbutton[4], backbutton[2], startbutton[2], endbutton[3];
 ObjectID easybutton, normalbutton, hardbutton, hellbutton;
 ObjectID papercup[4], marble, arrow1, arrow2;
-ObjectID legcase[16], cover[3], start[2], end[2], mid[4];
+ObjectID legcase[8], cover[3], start[2], end[2], mid[4];
 int cupX[4] = { 200,450,680,900 };
 int marbleX[4] = { 270,520,750,975 };
 int marbleY = 500;
@@ -141,8 +141,10 @@ void game2set1() {
 	game2_on = true;
 	showMessage("이 게임은 총 3단계로 구성되어 있습니다.\n첫번째 문제! 사다리 출발지점을 골라주세요.");
 	locateObject(endbutton[2], scene3, 1150, 300);
-	index3 = rand() % 16;
+
+	index3 = rand() % 8;
 	showObject(legcase[index3]);
+
 	cover[2] = DIY(cover[2], "가림막2", "Images/cover2.png", scene3, 350, 160);
 	cover[0] = DIY(cover[0], "가림막", "Images/cover1.png", scene3, 335, 460);
 	cover[1] = DIY(cover[1], "가림막", "Images/cover1.png", scene3, 335, 40);
@@ -161,21 +163,21 @@ void game2set1() {
 
 //게임②-출발 경우의 수 판별 함수
 bool check1_legcase(int i) {
-	if ((i % 4) < 2) return true;	//1 출발
-	else if ((i % 4) >= 2) return false;	//2 출발
+	if ((i % 2) == 0) return true;	//1 출발
+	else if ((i % 2) > 0) return false;	//2 출발
 }
 //게임②-도착 경우의 수 판별 함수
 bool check2_legcase(int i) {
-	if ((i % 2) == 0) return true;		//Left 도착
-	else if ((i % 2) > 0) return false;	//Right 도착
+	if (i == 1 || i == 2 || i == 5 || i == 6) return true;		//Left 도착
+	else if (i == 0 || i == 3|| i == 4 || i == 7) return false;	//Right 도착
 }
 //게임②-사다리 개수 판별 함수
 int check3_legcase(int i) {
-	switch (i / 4) {
-	case 0: return 0;
-	case 1: return 1;
-	case 2: return 2;
-	case 3: return 3;
+	switch (i / 2) {
+	case 0: return 0;	//사다리개수 1개
+	case 1: return 1;	//사다리개수 2개
+	case 2: return 2;	//사다리개수 3개
+	case 3: return 3;	//사다리개수 4개
 	}
 }
 
@@ -295,6 +297,7 @@ void mousecallback(ObjectID object, int x, int y, MouseAction action) {
 				}
 				else if (object == start[1]) {
 					showMessage("땡!^^ 처음부터 다시~");
+					hideObject(start[0]);	hideObject(start[1]);
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
 				}
 			}
@@ -309,6 +312,7 @@ void mousecallback(ObjectID object, int x, int y, MouseAction action) {
 				}
 				else if (object == start[0]) {
 					showMessage("땡!^^ 처음부터 다시~");
+					hideObject(start[0]);	hideObject(start[1]);
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
 				}
 			}
@@ -326,6 +330,7 @@ void mousecallback(ObjectID object, int x, int y, MouseAction action) {
 				}
 				else if (object == end[1]) {
 					showMessage("땡!^^ 처음부터 다시~~");
+					hideObject(end[0]);	hideObject(end[1]);
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
 				}
 			}
@@ -339,6 +344,7 @@ void mousecallback(ObjectID object, int x, int y, MouseAction action) {
 				}
 				else if (object == end[0]) {
 					showMessage("땡!^^ 처음부터 다시~~");
+					hideObject(end[0]);	hideObject(end[1]);
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
 				}
 			}
@@ -350,40 +356,48 @@ void mousecallback(ObjectID object, int x, int y, MouseAction action) {
 				if (check3_legcase(x) == 0) {
 					showMessage("정답입니다! 축하합니다!");
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
+					for (int i = 0; i < 4; i++) hideObject(mid[i]);
 				}
 				else {
 					showMessage("아깝다... 한문제 남았는데...");
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
+					for (int i = 0; i < 4; i++) hideObject(mid[i]);
 				}
 			}
 			else if (object == mid[1]) {
 				if (check3_legcase(x) == 1) {
 					showMessage("정답입니다! 축하합니다!");
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
+					for (int i = 0; i < 4; i++) hideObject(mid[i]);
 				}
 				else {
 					showMessage("아깝다... 한문제 남았는데...");
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
+					for (int i = 0; i < 4; i++) hideObject(mid[i]);
 				}
 			}
 			else if (object == mid[2]) {
 				if (check3_legcase(x) == 2) {
 					showMessage("정답입니다! 축하합니다!");
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
+					for (int i = 0; i < 4; i++) hideObject(mid[i]);
 				}
 				else {
 					showMessage("아깝다... 한문제 남았는데...");
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
+					for (int i = 0; i < 4; i++) hideObject(mid[i]);
 				}
 			}
 			else if (object == mid[3]) {
 				if (check3_legcase(x) == 3) {
 					showMessage("정답입니다! 축하합니다!");
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
+					for (int i = 0; i < 4; i++) hideObject(mid[i]);
 				}
 				else {
 					showMessage("아깝다... 한문제 남았는데...");
 					for (int i = 0; i < 3; i++) hideObject(cover[i]);
+					for (int i = 0; i < 4; i++) hideObject(mid[i]);
 				}
 			}
 		}
@@ -461,7 +475,7 @@ int main() {
 	marble_numberbutton[3] = DIY(marble_numberbutton[3], "숫자4", "Images/number-4.png", scene2, 975, 285, false);
 
 	char image[50];
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < 8; i++) {
 		sprintf_s(image, "Images/case%d.png", i + 1);
 		legcase[i] = DIY(legcase[i], "사다리타기 경우의 수", image, scene3, 300, 20, false);
 	}
